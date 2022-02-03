@@ -2,14 +2,7 @@ from rest_framework import serializers
 from watchlist_app.models import WatchList, StreamPlatform
 
 # model based serializers----------------
-class StreamPlatformSerializer(serializers.ModelSerializer):
     
-    class Meta:
-        model = StreamPlatform
-        fields = "__all__"
-  
-  
-  
 class WatchListSerializer(serializers.ModelSerializer):
     # adding custom field without model serial
     len_name = serializers.SerializerMethodField()
@@ -36,6 +29,15 @@ class WatchListSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Name is too short")
         return value      
 
+
+class StreamPlatformSerializer(serializers.ModelSerializer):
+    # nested serializers/ one to many serializers
+    watchlist = WatchListSerializer(many=True, read_only=True)
+        
+    class Meta:
+        model = StreamPlatform
+        fields = "__all__"
+  
 # class based serializers-------------------
 #custom validation
 # def validate_custom_name(value):
