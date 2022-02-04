@@ -2,11 +2,46 @@ from rest_framework import status
 from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework import mixins
 
-from watchlist_app.models import WatchList, StreamPlatform
-from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer
+from watchlist_app.models import WatchList, StreamPlatform, Review
+from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 
 # Create your views here.
+#generic without mixins
+class ReviewList(generics.ListCreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    
+class ReviewDetails(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+# mixins and generic classes
+
+# class ReviewDetails(mixins.RetrieveModelMixin,
+#                     mixins.CreateModelMixin,
+#                     generics.GenericAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+
+
+# class ReviewList(mixins.ListModelMixin,
+#                  mixins.CreateModelMixin,
+#                  generics.GenericAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
+
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+
 
 # Class based serializer---------
 class StreamPlatformAV(APIView):
@@ -23,7 +58,8 @@ class StreamPlatformAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+
 class StreamPlatformDetailsAV(APIView):
 
     def get(self, request, pk):
@@ -72,7 +108,7 @@ class WatchListAV(APIView):
 
 
 class WatchDetailsAV(APIView):
-        
+
     def get(self, request, pk):
         try:
             movie = WatchList.objects.get(pk=pk)
