@@ -9,6 +9,7 @@ from watchlist_app.api.views import (WatchListAV, WatchDetailsAV,
 router = DefaultRouter()
 router.register('stream', StreamPlatformVS, basename='streamplatform')
 urlpatterns = [
+    # path('', Home, name='home'),
     path('list/', WatchListAV.as_view(), name='watch-list'),
     path('<int:pk>', WatchDetailsAV.as_view(), name='watch-details'),
     path('', include(router.urls)),
