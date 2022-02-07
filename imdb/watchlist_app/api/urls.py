@@ -21,6 +21,4 @@ urlpatterns = [
     path('stream/<int:pk>/review-create', ReviewCreate.as_view(), name='review-create'),
     path('stream/<int:pk>/review/', ReviewList.as_view(), name='review-list'),
     path('stream/review/<int:pk>', ReviewDetails.as_view(), name='review-details'),
-    
-    # path('api-auth/', include('rest_framework.urls'))
 ]
