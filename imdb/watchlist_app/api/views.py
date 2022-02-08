@@ -2,12 +2,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 # from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
 
+from watchlist_app.api.permissions import AdminOrReadOnly, ReviewUserOrReadOnly
 from watchlist_app.models import WatchList, StreamPlatform, Review
 from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 
@@ -16,7 +18,7 @@ from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSer
 class StreamPlatformVS(viewsets.ModelViewSet): #ReadOnlyModelViewSet for without post/delete etc
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
-
+    
 # viewsets with routers
 # class StreamPlatformVS(viewsets.ViewSet):
 
@@ -64,6 +66,7 @@ class ReviewCreate(generics.CreateAPIView):
 class ReviewList(generics.ListAPIView):
     # queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly] #permission_classes
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -73,6 +76,9 @@ class ReviewList(generics.ListAPIView):
 class ReviewDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    # permission_classes = [IsAuthenticatedOrReadOnly] #permission_classes
+    permission_classes = [ReviewUserOrReadOnly] #custom permisson
+
 
 # mixins and generic classes
 
