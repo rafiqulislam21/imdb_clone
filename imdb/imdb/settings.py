@@ -139,7 +139,20 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
 
         # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
+    
+    #throttling globals
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.AnonRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle'
+    # ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/day',
+        'user': '10/day',
+        'review-create': '2/day',
+        'review-list': '5/day',
+        'review-details': '5/day',
+    }
 
 }
 
