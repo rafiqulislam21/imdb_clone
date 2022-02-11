@@ -17,6 +17,9 @@ class WatchListSerializer(serializers.ModelSerializer):
     # nested serializers/ one to many serializers
     reviews = ReviewSerializer(many=True, read_only=True)
     
+    # overrides the foreign key to another field
+    platform = serializers.CharField(source='platform.name')
+    
     class Meta:
         model = WatchList
         fields = "__all__"

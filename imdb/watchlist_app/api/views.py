@@ -11,11 +11,30 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
 
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+
 from watchlist_app.api.permissions import IsAdminOrReadOnly, IsReviewUserOrReadOnly
 from watchlist_app.models import WatchList, StreamPlatform, Review
 from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 from watchlist_app.api.throttling import ReviewListThrottle, ReviewCreateThrottle
 # Create your views here.
+#filtering
+class userReview(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    # permission_classes = [IsAuthenticated] #permission_classes
+    
+    # def get_queryset(self):
+    #     username = self.kwargs['username']
+    #     return Review.objects.filter(review_user__username=username)
+   
+    def get_queryset(self):
+        username = self.request.query_params.get('username', None)
+        return Review.objects.filter(review_user__username=username)
+    
+    
+    
+
 # modelviewset with routers
 class StreamPlatformVS(viewsets.ModelViewSet): #ReadOnlyModelViewSet for without post/delete etc
     queryset = StreamPlatform.objects.all()
@@ -195,6 +214,23 @@ class WatchListAV(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class WatchListGV(generics.ListAPIView):
+    queryset = WatchList.objects.all()
+    serializer_class = WatchListSerializer
+    # pagination_class = WatchListCPagination
+
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['title', 'platform__name']
+    # url looks(http://127.0.0.1:8000/watch/filter?name=Dark&platform__name=netflix)
+    
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['=title', 'platform__name']
+    # url looks(http://127.0.0.1:8000/watch/filter?search=Dar)
+
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields  = ['avg_rating']
+    # url looks(http://127.0.0.1:8000/watch/filter?ordering=-avg_rating)
 
 class WatchDetailsAV(APIView):
     # permission only admin can edit
