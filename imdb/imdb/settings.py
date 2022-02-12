@@ -153,8 +153,19 @@ REST_FRAMEWORK = {
         'review-create': '2/day',
         'review-list': '5/day',
         'review-details': '5/day',
-    }
+    },
+    
+    
+    # global pagination, working in generic class model
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.paginatwion.LimitOffsetPagination',
+    # 'PAGE_SIZE': 10
 
+    # set globally offset pagination
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 # JWT customization things

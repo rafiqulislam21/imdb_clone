@@ -18,6 +18,7 @@ from watchlist_app.api.permissions import IsAdminOrReadOnly, IsReviewUserOrReadO
 from watchlist_app.models import WatchList, StreamPlatform, Review
 from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 from watchlist_app.api.throttling import ReviewListThrottle, ReviewCreateThrottle
+from watchlist_app.api.pagination import WatchListPagination, WatchListLOPagination, WatchListCPagination
 # Create your views here.
 #filtering
 class userReview(generics.ListAPIView):
@@ -218,7 +219,9 @@ class WatchListAV(APIView):
 class WatchListGV(generics.ListAPIView):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
-    # pagination_class = WatchListCPagination
+    # pagination_class = WatchListPagination
+    # pagination_class = WatchListLOPagination
+    pagination_class = WatchListCPagination
 
     # filter_backends = [DjangoFilterBackend]
     # filterset_fields = ['title', 'platform__name']
@@ -228,8 +231,8 @@ class WatchListGV(generics.ListAPIView):
     # search_fields = ['=title', 'platform__name']
     # url looks(http://127.0.0.1:8000/watch/filter?search=Dar)
 
-    filter_backends = [filters.OrderingFilter]
-    ordering_fields  = ['avg_rating']
+    # filter_backends = [filters.OrderingFilter]
+    # ordering_fields  = ['avg_rating']
     # url looks(http://127.0.0.1:8000/watch/filter?ordering=-avg_rating)
 
 class WatchDetailsAV(APIView):
