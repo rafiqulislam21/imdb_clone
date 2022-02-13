@@ -40,6 +40,8 @@ class userReview(generics.ListAPIView):
 class StreamPlatformVS(viewsets.ModelViewSet): #ReadOnlyModelViewSet for without post/delete etc
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
+    # permission only admin can edit
+    permission_classes = [IsAdminOrReadOnly]
     
 # viewsets with routers
 # class StreamPlatformVS(viewsets.ViewSet):

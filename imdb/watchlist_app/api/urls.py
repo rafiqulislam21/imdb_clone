@@ -13,7 +13,7 @@ urlpatterns = [
     path('filter/', WatchListGV.as_view(), name='watch-list-filter'),
 
     path('list/', WatchListAV.as_view(), name='watch-list'),
-    path('<int:pk>/', WatchDetailsAV.as_view(), name='watch-details'),
+    path('<int:pk>/', WatchDetailsAV.as_view(), name='watch-detail'),
     path('', include(router.urls)),
     # path('stream/', StreamPlatformAV.as_view(), name='stream'),
     # path('stream/<int:pk>', StreamPlatformDetailsAV.as_view(),name='stream-platform-details'),
@@ -22,7 +22,7 @@ urlpatterns = [
     # path('review/<int:pk>', ReviewDetails.as_view(), name='review-details'),
     path('<int:pk>/review-create/', ReviewCreate.as_view(), name='review-create'),
     path('<int:pk>/reviews/', ReviewList.as_view(), name='review-list'),
-    path('review/<int:pk>/', ReviewDetails.as_view(), name='review-details'),
+    path('review/<int:pk>/', ReviewDetails.as_view(), name='review-detail'),
     
     # path('reviews/<str:username>/', userReview.as_view(), name='user-review-list'),
     path('reviews/', userReview.as_view(), name='user-review-list'),
